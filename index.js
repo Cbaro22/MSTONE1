@@ -5,6 +5,7 @@ const dotenv = require("dotenv")
 const bcryptjs = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const User = require("./userModel")
+const Product = require("./productModel")
 dotenv.config()
 
 app.use(express.json())
@@ -101,3 +102,42 @@ app.post('/login', async (req, resp) =>{
 
     })
 })
+
+app.get('/get-products', async (req, resp)=>{
+     
+    const products = await Product.find()
+     
+    if(!product){
+        return resp.status(404).json({message:"product not found"})
+    }
+
+    resp.status(200).json({message:"Product is Available"})
+})
+
+app.get('/product-details', async (req, resp)=>{
+    const {productName} = req.body
+
+    const product = await Product.findOne({productName});
+    if (!product) return resp.status(404).json({ message: 'Product not found' });
+    resp.json(product);
+})
+
+app.post('/order-items', async (req, resp) => {
+  
+    const { userId, items } = req.body;
+
+    const enrichedItems = await Promise.all(items.map(async item => {
+      const ordereditem = await Product.findOne({productName});
+      if (!ordereditem){ 
+      return resp.status(404).json({message:"item not found" })
+    };
+    }));
+
+    const newOrder = new Order({ userId, items: enrichedItems });
+    await newOrder.save();
+
+    resp.status(201).json(newOrder);
+  
+});
+
+
