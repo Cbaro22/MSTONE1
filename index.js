@@ -137,7 +137,7 @@ app.patch('/reset-password', async (req, resp) =>{
         return resp.status(404).json({message:"user account not found"})
     }
 
-    const hashedPassword =await bcrypt.hash(password, 12)
+    const hashedPassword =await bcrypt.hash(password, 14)
 
     user.password = hashedPassword
 
