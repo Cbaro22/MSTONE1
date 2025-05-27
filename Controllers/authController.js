@@ -1,5 +1,8 @@
-const forgotPasswordMail = require("../models/sendMail")
+
 const User = require("../models/userModel")
+const { validEmail } = require("../sendMail")
+const bcrypt = require("bcryptjs")
+
 
 const register = async (req, resp) =>{
     try{
@@ -7,6 +10,12 @@ const register = async (req, resp) =>{
 
      if(!email){
         return resp.status(400).json({ message:"please enter your email"})
+     }
+
+     if(!validEmail(email)){
+        return resp.status(400).json({
+            message:"Incorrect Email format"
+        })
      }
 
     if(!password){
@@ -39,7 +48,3 @@ const register = async (req, resp) =>{
 } 
 
 module.exports = register
-
-
-
-

@@ -5,14 +5,14 @@ const dotenv = require("dotenv")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const User = require("./models/userModel")
-const Product = require("../productModel")
-const forgotPasswordMail = require("../sendMail")
+const forgotPasswordMail = require("./sendMail")
 const register = require("./Controllers/authController")
-const getProduct = require("./Controllers/productController")
-const proddetails = require("./Controllers/productController")
+const {addProducts,proddetails,getProduct} = require("./Controllers/productController")
 const orderItems = require("./Controllers/orderController")
+const addCategory = require("./Controllers/cateController")
 dotenv.config()
-
+const { body, validationResult } = require("express-validator")
+const getAllUsers = require("./Controllers/userController")
 app.use(express.json())
 
 const PORT = process.env.PORT || 5000
@@ -31,7 +31,7 @@ mongoose.connect(process.env.MONGODB_URL)
 app.post('/registration', register)
 
 app.post('/login', async (req, resp) =>{
-    const {email, password} = req.body
+    try{const {email, password} = req.body
 
     const registeredUser = await User.findOne({email})
     if(!registeredUser){
@@ -70,7 +70,13 @@ app.post('/login', async (req, resp) =>{
 
         }
 
-    })})
+    })
+} catch (error){
+    resp.status(500).json({
+            message:error.message
+        })}
+    })
+    
 
 app.post('/forgot-password', async (req, resp) =>{
     const {email} = req.body;
@@ -119,6 +125,12 @@ app.get('/get-products', getProduct)
 
 app.get('/product-details', proddetails)
 
-app.post('/order-items', orderItems);
+app.post('/order-items', orderItems)
+
+app.post('/add-product', addProducts)
+
+app.post('/add-category', addCategory)
+
+app.get('/all-Users', getAllUsers)
 
 

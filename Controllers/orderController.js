@@ -1,5 +1,5 @@
 const orderItems = async (req, resp) => {
-  
+  try {
     const { userId, items } = req.body;
 
     const enrichedItems = await Promise.all(items.map(async item => {
@@ -13,6 +13,12 @@ const orderItems = async (req, resp) => {
     await newOrder.save();
 
     resp.status(201).json(newOrder);
+  } catch (error) {
+     resp.status(500).json({
+            message:error.message
+        })
+  }
+    
   
 }
 

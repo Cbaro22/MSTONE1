@@ -6,8 +6,14 @@ const productSchema = new mongoose.Schema({
     prodescriptrion:{type:String, default:""},
     productPrice:{type:Number, require:true},
     prodQuantity:{ type: Number, required: true },
-  
-}, {timestamps: true})
+    user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+},
+ {timestamps: true}
+)
 
 const Product = new mongoose.model("Product", productSchema)
 
