@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema({
     productcategory:{type: mongoose.Schema.Types.ObjectId, ref: 'Category', require:true},
     prodescriptrion:{type:String, default:""},
     productPrice:{type:Number, require:true},
-    prodQuantity:{ type: Number, required: true },
+    stock:{type:Number, default:""},
     user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

@@ -5,6 +5,7 @@ const { validateRegister, auth } = require("../Middlewares/authindex")
 const { getProduct, proddetails, addProducts } = require("../Controllers/productController")
 const orderItems = require("../Controllers/orderController")
 const addCategory = require("../Controllers/cateController")
+const handleOrderUpdate = require("../Controllers/orderController")
 
 const router = express.Router()
 
@@ -14,9 +15,10 @@ router.post('/forgot-password',handleForgotPassword )
 router.patch('/reset-password', auth, handleResetPassword)
 router.get('/get-products', getProduct)
 router.get('/product-details', proddetails)
-router.post('/order-items', orderItems)
 router.post('/add-product', addProducts)
 router.post('/add-category', addCategory)
 router.get('/all-Users',auth, getAllUsers)
+
+
 
 module.exports = router
